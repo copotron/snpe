@@ -1,6 +1,6 @@
 //==============================================================================
 //
-//  Copyright (c) 2016-18 Qualcomm Technologies, Inc.
+//  Copyright (c) 2016-2019 Qualcomm Technologies, Inc.
 //  All Rights Reserved.
 //  Confidential and Proprietary - Qualcomm Technologies, Inc.
 //
@@ -34,6 +34,7 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
    SNPE_CONFIG_WRONG_INPUT_NAME                          = 105,
    SNPE_CONFIG_INCORRECT_INPUT_DIMENSIONS                = 106,
    SNPE_CONFIG_DIMENSIONS_MODIFICATION_NOT_SUPPORTED     = 107,
+   SNPE_CONFIG_BOTH_OUTPUT_LAYER_TENSOR_NAMES_SET        = 108,
 
    SNPE_CONFIG_NNCONFIG_ONLY_TENSOR_SUPPORTED            = 120,
    SNPE_CONFIG_NNCONFIG_ONLY_USER_BUFFER_SUPPORTED       = 121,
@@ -56,8 +57,11 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
    SNPE_DLSYSTEM_BUFFER_MANAGER_MISSING                  = 214,
    SNPE_DLSYSTEM_RUNTIME_BUFFER_SOURCE_UNSUPPORTED       = 215,
    SNPE_DLSYSTEM_BUFFER_CAST_FAILED                      = 216,
+   SNPE_DLSYSTEM_WRONG_TRANSITION_TYPE                   = 217,
+   SNPE_DLSYSTEM_LAYER_ALREADY_REGISTERED                = 218,
 
    SNPE_DLSYSTEM_BUFFERENCODING_UNKNOWN                  = 240,
+   SNPE_DLSYSTEM_BUFFER_INVALID_PARAM                    = 241,
 
    // DlContainer errors
    SNPE_DLCONTAINER_MODEL_PARSING_FAILED                 = 300,
@@ -119,6 +123,7 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
    SNPE_GPU_LAYER_PROXY_ERROR                            = 814,
    SNPE_GPU_BUFFER_IN_USE                                = 815,
    SNPE_GPU_BUFFER_MODIFICATION_ERROR                    = 816,
+   SNPE_GPU_DATA_ARRANGEMENT_INVALID                     = 817,
 
    // DSP runtime errors
    SNPE_DSP_LAYER_NOT_SUPPORTED                          = 900,
@@ -132,6 +137,7 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
    SNPE_DSP_RUNTIME_COMMUNICATION_ERROR                  = 908,
    SNPE_DSP_RUNTIME_INVALID_PARAM_ERROR                  = 909,
    SNPE_DSP_RUNTIME_SYSTEM_ERROR                         = 910,
+   SNPE_DSP_RUNTIME_CRASHED_ERROR                        = 911,
 
    // Model validataion errors
    SNPE_MODEL_VALIDATION_LAYER_NOT_SUPPORTED             = 1000,
@@ -143,6 +149,7 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
    SNPE_MODEL_VALIDATION_INVALID_CONSTRAINT              = 1006,
    SNPE_MODEL_VALIDATION_MISSING_BUFFER                  = 1007,
    SNPE_MODEL_VALIDATION_BUFFER_REUSE_NOT_SUPPORTED      = 1008,
+   SNPE_MODEL_VALIDATION_LAYER_COULD_NOT_BE_ASSIGNED     = 1009,
 
    // UDL errors
    SNPE_UDL_LAYER_EMPTY_UDL_NETWORK                      = 1100,
@@ -160,6 +167,26 @@ enum class ZDL_EXPORT ErrorCode : uint32_t {
 
    // Storage Errors
    SNPE_STORAGE_INVALID_KERNEL_REPO                      = 1300,
+
+   // AIP runtime errors
+   SNPE_AIP_LAYER_NOT_SUPPORTED                          = 1400,
+   SNPE_AIP_LAYER_PARAM_NOT_SUPPORTED                    = 1401,
+   SNPE_AIP_LAYER_PARAM_INVALID                          = 1402,
+   SNPE_AIP_LAYER_PARAM_COMBINATION_INVALID              = 1403,
+   SNPE_AIP_STUB_NOT_PRESENT                             = 1404,
+   SNPE_AIP_LAYER_NAME_TRUNCATED                         = 1405,
+   SNPE_AIP_LAYER_INPUT_BUFFER_NAME_TRUNCATED            = 1406,
+   SNPE_AIP_LAYER_OUTPUT_BUFFER_NAME_TRUNCATED           = 1407,
+   SNPE_AIP_RUNTIME_COMMUNICATION_ERROR                  = 1408,
+   SNPE_AIP_RUNTIME_INVALID_PARAM_ERROR                  = 1409,
+   SNPE_AIP_RUNTIME_SYSTEM_ERROR                         = 1410,
+   SNPE_AIP_RUNTIME_TENSOR_MISSING                       = 1411,
+   SNPE_AIP_RUNTIME_TENSOR_SHAPE_MISMATCH                = 1412,
+   SNPE_AIP_RUNTIME_BAD_AIX_RECORD                       = 1413,
+
+   // DlCaching errors
+   SNPE_DLCACHING_INVALID_METADATA                       = 1500,
+   SNPE_DLCACHING_INVALID_INITBLOB                       = 1501
 
 };
 
@@ -186,6 +213,11 @@ ZDL_EXPORT ErrorCode getLastErrorCode();
  *       value of the call indicated an error.
  */
 ZDL_EXPORT const char* getLastErrorString();
+
+/**
+ * Returns the info string of the last error encountered.
+ */
+ZDL_EXPORT const char* getLastInfoString();
 
 /**
  * Returns the uint32_t representation of the error code enum.
